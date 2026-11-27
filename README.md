@@ -1,6 +1,8 @@
 # MyMusic
 
-This is an early development foundation, not the completed application. It supports individual YouTube links, favourites and embedded video playback. Signed-out songs are stored locally; signed-in songs use Supabase. The two libraries remain separate and local songs are not uploaded automatically. Playlist management, SQLite, karaoke, local files and the other features in the brief are not yet implemented. Do not rely on this development version for irreplaceable data.
+MyMusic is an early development application for personal music and karaoke management. Supabase is the intended persistent storage for the signed-in administrator's library and profiles; SQLite is no longer a project requirement. Signed-out songs are held separately in browser local storage and are not uploaded automatically. The application is intended for a single screen; a second-monitor display is not required.
+
+Currently available: administrator sign-in, music profiles, YouTube video links, favourites, profile search, song selection and sequential embedded playback. This is not yet the complete application: karaoke sessions, local file playback, integrated online search, complete playlist management, full playback controls, backups and a verified Windows installer remain unfinished. Do not rely on this development version for irreplaceable data.
 
 Install dependencies using `npm.cmd install`, build with `npm.cmd run build`, and launch with `npm.cmd start`.
 
