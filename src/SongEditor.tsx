@@ -1,0 +1,8 @@
+import {useState} from 'react';
+
+export type EditableTrack={id:string;title:string;artist:string;favourite:boolean;dbId?:string};
+export default function SongEditor({track,onSave,onCancel}:{track:EditableTrack;onSave:(track:EditableTrack,link:string,title:string,artist:string)=>Promise<boolean>;onCancel:()=>void}){
+  const [link,setLink]=useState(`https://www.youtube.com/watch?v=${track.id}`);const [title,setTitle]=useState(track.title);const [artist,setArtist]=useState(track.artist);const [busy,setBusy]=useState(false);const [feedback,setFeedback]=useState('');
+  async function submit(e:React.FormEvent){e.preventDefault();setBusy(true);setFeedback('');try{const ok=await onSave(track,link,title,artist);if(ok)onCancel();else setFeedback('Changes were not saved. See the message above.')}catch{setFeedback('Could not save changes. Please try again.')}finally{setBusy(false)}}
+  return <form className="song-editor" onSubmit={submit}><h3>Edit song</h3><label>Song title<input required value={title} onChange={e=>setTitle(e.target.value)}/></label><label>Artist<input value={artist} onChange={e=>setArtist(e.target.value)}/></label><label>YouTube video link<input required type="url" value={link} onChange={e=>setLink(e.target.value)}/></label><p className="muted">Title and artist changes also appear in other profiles containing this video. Replacing the link changes this profile only.</p>{feedback&&<p role="alert">{feedback}</p>}<div><button className="primary" disabled={busy||!title.trim()}>{busy?'Saving…':'Save changes'}</button> <button type="button" disabled={busy} onClick={onCancel}>Cancel</button></div></form>;
+}

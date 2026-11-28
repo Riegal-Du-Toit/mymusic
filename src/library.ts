@@ -9,3 +9,8 @@ export function youtubeVideoId(input:string):string|null {
 export function matchesSearch(track:{title:string;artist:string},query:string):boolean {
   return `${track.title} ${track.artist}`.toLocaleLowerCase().includes(query.trim().toLocaleLowerCase());
 }
+export function moveTrack(ids:string[],source:string,target:string):string[]{
+  const from=ids.indexOf(source),to=ids.indexOf(target);
+  if(from<0||to<0||from===to)return [...ids];
+  const next=[...ids];next.splice(from,1);next.splice(to,0,source);return next;
+}
