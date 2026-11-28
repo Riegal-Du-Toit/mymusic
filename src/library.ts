@@ -19,7 +19,12 @@ export function insertPlayNext<T extends {requested?:boolean}>(queue:T[],current
   while(position<next.length&&next[position].requested)position++;
   next.splice(position,0,request);return next;
 }
-export function startQueueKeepingRequests<T extends {requested?:boolean}>(songs:T[],queue:T[],currentIndex:number):T[]{
+export function isSongInActiveQueue<T extends {id:string}>(queue:T[],currentIndex:number,songId:string,finished:boolean):boolean{
+  const start=finished?currentIndex+1:Math.max(0,currentIndex);
+  return queue.slice(start).some(song=>song.id===songId);
+}
+export function startQueueKeepingRequests<T extends {id:string;requested?:boolean}>(songs:T[],queue:T[],currentIndex:number):T[]{
   if(!songs.length)return [...queue];
-  return [songs[0],...queue.slice(currentIndex+1).filter(song=>song.requested),...songs.slice(1)];
+  const ordered=[songs[0],...queue.slice(currentIndex+1).filter(song=>song.requested),...songs.slice(1)];
+  const seen=new Set<string>();return ordered.filter(song=>{if(seen.has(song.id))return false;seen.add(song.id);return true});
 }
