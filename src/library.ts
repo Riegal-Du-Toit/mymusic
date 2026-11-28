@@ -14,3 +14,12 @@ export function moveTrack(ids:string[],source:string,target:string):string[]{
   if(from<0||to<0||from===to)return [...ids];
   const next=[...ids];next.splice(from,1);next.splice(to,0,source);return next;
 }
+export function insertPlayNext<T extends {requested?:boolean}>(queue:T[],currentIndex:number,request:T):T[]{
+  const next=[...queue];let position=Math.max(0,currentIndex+1);
+  while(position<next.length&&next[position].requested)position++;
+  next.splice(position,0,request);return next;
+}
+export function startQueueKeepingRequests<T extends {requested?:boolean}>(songs:T[],queue:T[],currentIndex:number):T[]{
+  if(!songs.length)return [...queue];
+  return [songs[0],...queue.slice(currentIndex+1).filter(song=>song.requested),...songs.slice(1)];
+}
